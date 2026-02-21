@@ -1,63 +1,60 @@
-name: Build and Deploy to Azure Container Apps
+name: Build, Push and Deploy to Azure Container Apps
 
 on:
   push:
-    branches: [ "main" ]
-
-permissions:
-  contents: read
+    branches:
+      - main
 
 jobs:
-  build-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Azure login
+      - name: Login to Azure
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: ACR login
-        run: az acr login --name acrassistantdemo
-
-      - name: Docker build
-        run: docker build -t acrassistantdemo.azurecr.io/azure-assistant:latest .
-
-      - name: Docker push
-        run: docker push acrassistantdemo.azurecr.io/azure-assistant:latest
-
-      - name: Ensure Container Apps Environment
+      - name: Build Docker image
         run: |
-          az containerapp env show \
-            --name env-azure-assistant \
-            --resource-group rg-azure-assistant 1>/dev/null 2>/dev/null \
-          && echo "env exists" \
-          || az containerapp env create \
-            --name env-azure-assistant \
-            --resource-group rg-azure-assistant \
-            --location westeurope
+          docker build -t acrassistantdemo.azurecr.io/${{ env.IMAGE_NAME }}:v1 .
 
-      - name: Deploy Container App
+      - name: Push Docker image
         run: |
-          if az containerapp show --name azure-ai-knowledge-assistant --resource-group rg-azure-assistant 1>/dev/null 2>/dev/null; then
+          docker push acrassistantdemo.azurecr.io/${{ env.IMAGE_NAME }}:v1
+
+      - name: Deploy to Azure Container Apps
+        run: |
+          if az containerapp show --name ${{ env.ACA_APP }} --resource-group ${{ env.RG }}; then
             az containerapp update \
-              --name azure-ai-knowledge-assistant \
-              --resource-group rg-azure-assistant \
-              --image acrassistantdemo.azurecr.io/azure-assistant:latest \
-              --set-env-vars OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+              --name ${{ env.ACA_APP }} \
+              --resource-group ${{ env.RG }} \
+              --image acrassistantdemo.azurecr.io/${{ env.IMAGE_NAME }}:v1 \
+              --target-port ${{ env.PORT }};
           else
             az containerapp create \
-              --name azure-ai-knowledge-assistant \
-              --resource-group rg-azure-assistant \
-              --environment env-azure-assistant \
-              --image acrassistantdemo.azurecr.io/azure-assistant:latest \
-              --ingress external \
-              --target-port 8501 \
-              --registry-server acrassistantdemo.azurecr.io \
-              --registry-username $(az acr credential show --name acrassistantdemo --query username -o tsv) \
-              --registry-password $(az acr credential show --name acrassistantdemo --query passwords[0].value -o tsv) \
-              --env-vars OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+              --name ${{ env.ACA_APP }} \
+              --resource-group ${{ env.RG }} \
+              --image acrassistantdemo.azurecr.io/${{ env.IMAGE_NAME }}:v1 \
+              --target-port ${{ env.PORT }} \
+              --ingress external;
           fi
+
+      - name: Set OpenAI API Key
+        run: |
+          az containerapp revision copy \
+            --name ${{ env.ACA_APP }} \
+            --resource-group ${{ env.RG }} \
+            --set-env OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+
+    env:
+      RG: rg-azure-assistant
+      ACR: acrassistantdemo
+      ACA_ENV: env-azure-assistant
+      ACA_APP: azure-ai-knowledge-assistant
+      LOCATION: westeurope
+      IMAGE_NAME: azure-assistant
+      PORT: 8501
