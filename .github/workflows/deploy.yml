@@ -29,15 +29,25 @@ jobs:
       - name: Docker push
         run: docker push acrassistantdemo.azurecr.io/azure-assistant:latest
 
-      - name: Create Container Apps env (idempotent)
+      - name: Ensure Container Apps Environment
         run: |
+          az containerapp env show \
+            --name env-azure-assistant \
+            --resource-group rg-azure-assistant \
+          || \
           az containerapp env create \
             --name env-azure-assistant \
             --resource-group rg-azure-assistant \
-            --location westeurope || true
+            --location westeurope
 
-      - name: Create or update Container App
+      - name: Deploy Container App
         run: |
+          az containerapp update \
+            --name azure-ai-knowledge-assistant \
+            --resource-group rg-azure-assistant \
+            --image acrassistantdemo.azurecr.io/azure-assistant:latest \
+            --set-env-vars OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
+          || \
           az containerapp create \
             --name azure-ai-knowledge-assistant \
             --resource-group rg-azure-assistant \
@@ -48,10 +58,4 @@ jobs:
             --registry-server acrassistantdemo.azurecr.io \
             --registry-username $(az acr credential show --name acrassistantdemo --query username -o tsv) \
             --registry-password $(az acr credential show --name acrassistantdemo --query passwords[0].value -o tsv) \
-            --env-vars OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
-            || \
-          az containerapp update \
-            --name azure-ai-knowledge-assistant \
-            --resource-group rg-azure-assistant \
-            --image acrassistantdemo.azurecr.io/azure-assistant:latest \
-            --set-env-vars OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+            --env-vars OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
