@@ -33,29 +33,31 @@ jobs:
         run: |
           az containerapp env show \
             --name env-azure-assistant \
-            --resource-group rg-azure-assistant \
-          || \
-          az containerapp env create \
+            --resource-group rg-azure-assistant 1>/dev/null 2>/dev/null \
+          && echo "env exists" \
+          || az containerapp env create \
             --name env-azure-assistant \
             --resource-group rg-azure-assistant \
             --location westeurope
 
       - name: Deploy Container App
         run: |
-          az containerapp update \
-            --name azure-ai-knowledge-assistant \
-            --resource-group rg-azure-assistant \
-            --image acrassistantdemo.azurecr.io/azure-assistant:latest \
-            --set-env-vars OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} \
-          || \
-          az containerapp create \
-            --name azure-ai-knowledge-assistant \
-            --resource-group rg-azure-assistant \
-            --environment env-azure-assistant \
-            --image acrassistantdemo.azurecr.io/azure-assistant:latest \
-            --ingress external \
-            --target-port 8501 \
-            --registry-server acrassistantdemo.azurecr.io \
-            --registry-username $(az acr credential show --name acrassistantdemo --query username -o tsv) \
-            --registry-password $(az acr credential show --name acrassistantdemo --query passwords[0].value -o tsv) \
-            --env-vars OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+          if az containerapp show --name azure-ai-knowledge-assistant --resource-group rg-azure-assistant 1>/dev/null 2>/dev/null; then
+            az containerapp update \
+              --name azure-ai-knowledge-assistant \
+              --resource-group rg-azure-assistant \
+              --image acrassistantdemo.azurecr.io/azure-assistant:latest \
+              --set-env-vars OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+          else
+            az containerapp create \
+              --name azure-ai-knowledge-assistant \
+              --resource-group rg-azure-assistant \
+              --environment env-azure-assistant \
+              --image acrassistantdemo.azurecr.io/azure-assistant:latest \
+              --ingress external \
+              --target-port 8501 \
+              --registry-server acrassistantdemo.azurecr.io \
+              --registry-username $(az acr credential show --name acrassistantdemo --query username -o tsv) \
+              --registry-password $(az acr credential show --name acrassistantdemo --query passwords[0].value -o tsv) \
+              --env-vars OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+          fi
