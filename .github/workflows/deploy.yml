@@ -32,41 +32,35 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Derive image tag
-        shell: bash
-        run: |
-          echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
+        run: echo "IMAGE_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
 
-      # Docker auth to ACR using GitHub Secrets (stable)
       - name: Docker login to ACR
-        shell: bash
         run: |
           docker login "${{ secrets.ACR_LOGIN_SERVER }}" \
             -u "${{ secrets.ACR_USERNAME }}" \
             -p "${{ secrets.ACR_PASSWORD }}"
 
-      - name: Docker build
+      - name: Build image
         run: |
-          docker build -t ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
+          docker build \
+            -t ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} .
 
-      - name: Docker push
+      - name: Push image
         run: |
-          docker push ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          docker push \
+            ${{ secrets.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
 
       - name: Ensure Container Apps Environment
-        shell: bash
         run: |
           az containerapp env show \
             --name "${{ env.ACA_ENV }}" \
-            --resource-group "${{ env.RG }}" 1>/dev/null 2>/dev/null \
-          && echo "env exists" \
+            --resource-group "${{ env.RG }}" >/dev/null 2>&1 \
           || az containerapp env create \
             --name "${{ env.ACA_ENV }}" \
             --resource-group "${{ env.RG }}" \
             --location "${{ env.LOCATION }}"
 
-      # Set registry credentials for the Container App (idempotent)
       - name: Set Container App registry credentials
-        shell: bash
         run: |
           az containerapp registry set \
             --name "${{ env.ACA_APP }}" \
@@ -76,19 +70,25 @@ jobs:
             --password "${{ secrets.ACR_PASSWORD }}" \
           || true
 
-      - name: Deploy Container App (create or update)
+      - name: Deploy Container App
         shell: bash
         run: |
           IMG="${{ secrets.ACR_LOGIN_SERVER }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}"
 
-          if az containerapp show --name "${{ env.ACA_APP }}" --resource-group "${{ env.RG }}" 1>/dev/null 2>/dev/null; then
+          if az containerapp show \
+              --name "${{ env.ACA_APP }}" \
+              --resource-group "${{ env.RG }}" >/dev/null 2>&1; then
+
+            echo "Updating existing app"
             az containerapp update \
               --name "${{ env.ACA_APP }}" \
               --resource-group "${{ env.RG }}" \
               --image "$IMG" \
-              --target-port "${{ env.TARGET_PORT }}" \
               --set-env-vars OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}"
+
           else
+
+            echo "Creating new app"
             az containerapp create \
               --name "${{ env.ACA_APP }}" \
               --resource-group "${{ env.RG }}" \
@@ -97,4 +97,5 @@ jobs:
               --ingress external \
               --target-port "${{ env.TARGET_PORT }}" \
               --set-env-vars OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}"
+
           fi
