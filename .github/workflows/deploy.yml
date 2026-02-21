@@ -1,6 +1,10 @@
 name: Build and Deploy to Azure Container Apps
 
 on:
+
+permissions:
+  id-token: write
+  contents: read
   push:
     branches: [ "main" ]
 
