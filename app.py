@@ -1,4 +1,5 @@
 import os
+import traceback
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -12,9 +13,12 @@ load_dotenv()
 st.set_page_config(page_title="Azure AI Assistant", page_icon="☁️")
 st.title("☁️ Azure Cloud Architecture Advisor")
 
+# DEBUG: show whether the key is present in the running container
+st.caption(f"OPENAI_API_KEY present: {bool(os.getenv('OPENAI_API_KEY'))}")
+
 api_key = os.getenv("OPENAI_API_KEY")
 if not api_key:
-    st.error("OPENAI_API_KEY fehlt in .env")
+    st.error("OPENAI_API_KEY fehlt als Environment Variable (Container App Configuration).")
     st.stop()
 
 client = OpenAI(api_key=api_key)
@@ -27,7 +31,6 @@ except FileNotFoundError:
     st.stop()
 
 def build_context(query: str) -> str:
-    # Slightly higher k for architecture advisory
     hits = simple_retrieve(query, k=4)
     if not hits:
         return "KNOWLEDGE BASE CONTEXT (authoritative):\nKB-GAP: keine passenden KB-Snippets gefunden."
@@ -37,17 +40,12 @@ def build_context(query: str) -> str:
     return "\n".join(parts)
 
 def violates_no_code_policy(text: str) -> bool:
-    """
-    MVP guardrail: this advisor must not output code/YAML/CLI.
-    Keep it simple and conservative.
-    """
     t = text.lower()
     banned_markers = [
         "```",
         "yaml",
         "jobs:",
         "steps:",
-        "name:",
         "uses:",
         "run:",
         "az ",
@@ -73,22 +71,24 @@ if user_msg:
     with st.chat_message("user"):
         st.markdown(user_msg)
 
-    # Build retrieval context and pass it as an extra system message BEFORE answering
     context = build_context(user_msg)
     messages_for_call = st.session_state.messages.copy()
-    # Insert KB context right after the main system prompt
     messages_for_call.insert(1, {"role": "system", "content": context})
 
     with st.chat_message("assistant"):
         with st.spinner("Denke nach..."):
-            resp = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=messages_for_call,
-                temperature=0.2,
-            )
-            answer = resp.choices[0].message.content
+            try:
+                resp = client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=messages_for_call,
+                    temperature=0.2,
+                )
+                answer = resp.choices[0].message.content
+            except Exception as e:
+                st.error(f"OpenAI call failed: {type(e).__name__}: {e}")
+                st.code(traceback.format_exc())
+                st.stop()
 
-            # Enforce "no code/YAML/CLI" policy (MVP)
             if violates_no_code_policy(answer):
                 answer = (
                     "FAIL: Output enthält Code/YAML/Commands.\n\n"
