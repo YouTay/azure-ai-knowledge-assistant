@@ -1,188 +1,248 @@
 # Azure AI Knowledge Assistant ☁️🤖
 
-Ein AI-gestützter Azure Architecture Advisor zur Unterstützung von Cloud Engineers und DevOps-Teams bei Architekturentscheidungen, Deployment-Guidance und Troubleshooting im Azure-Umfeld.
+Ein AI‑gestützter Azure Architecture Advisor zur Unterstützung von Cloud
+Engineers und DevOps‑Teams bei Architekturentscheidungen,
+Deployment‑Guidance und Troubleshooting im Azure‑Umfeld.
 
-Das Projekt demonstriert praktische Erfahrung in **Cloud Engineering, DevOps-Workflows, Containerisierung und AI-Integration** mit Fokus auf Azure-basierte Szenarien.
+Das Projekt kombiniert **Cloud Engineering**, **Containerisierung**,
+**CI/CD‑Automatisierung** und **Retrieval Augmented Generation (RAG)**
+zu einem praxisnahen Azure‑orientierten Engineering‑Tool.
 
-> Ziel des Projekts: Aufbau eines Cloud-Engineering-Portfolios für eine Junior-Position im Azure / Cloud / DevOps Umfeld.
+------------------------------------------------------------------------
 
----
+# 📸 Screenshots
 
-## 🎯 Projektüberblick
+## 🖥️ Chatbot UI (Startansicht)
 
-Der Azure AI Knowledge Assistant fungiert als interner Cloud-Engineering-Assistent und hilft bei:
+![UI](/screenshots/UI.png)
 
-- Azure Architekturentscheidungen
-- Deployment-Planung und Best Practices
-- Troubleshooting von Cloud-Setups
-- Schnelleren Projektstarts im Azure-Umfeld
-- Kontextbasierter Beratung über eine Knowledge Base (RAG)
+Moderne, strukturierte Benutzeroberfläche mit Architektur‑Fokus.
 
-Dabei kombiniert das System Large Language Models mit einer projektinternen Knowledge Base zur fundierten Antwortgenerierung.
+------------------------------------------------------------------------
 
----
+## 🧠 Architekturberatung -- Beispielantwort (Teil 1)
 
-## 🏗️ Architektur & technische Highlights
+![Architecture Response 1](/screenshots/Advisor-Answer-Part-1.png)
 
-- Python-basierte Chatbot-Applikation
-- Container-ready Architektur (Docker)
-- Azure-Deployment vorbereitet (Container Apps / Web App / ACR Workflow)
-- Retrieval Augmented Generation (RAG) über lokale Knowledge Base
-- Prompt-Separation zur Wartbarkeit (`/prompts`)
-- Modularer Retriever (`retriever.py`)
-- GitHub-basierte CI/CD Integration
+Strukturierte Antwort mit:
 
----
+-   Workload Snapshot\
+-   Empfohlene Architektur\
+-   Service Map\
+-   Trade‑offs
 
-## ⚙️ Tech Stack
+------------------------------------------------------------------------
 
-### Core Technologien
+## 📊 Architekturberatung -- Skalierung, Kosten & Risiken (Teil 2)
 
-- Python
-- Streamlit (UI Framework)
-- OpenAI API (LLM Backend)
-- Knowledge Base Retrieval (RAG)
+![Architecture Response 2](/screenshots/Advisor-Answer-Part-2.png)
 
-### Cloud / DevOps Fokus
+Erweiterte Analyse mit:
 
-- Docker Containerisierung
-- Azure Container Registry (ACR)
-- GitHub Actions CI/CD Pipeline
-- Azure-ready Deployment Architektur
+-   Skalierungsstrategie\
+-   Cost Drivers\
+-   Risiken / Anti‑Patterns\
+-   Troubleshooting Hinweise\
+-   Next Questions
 
-> Hinweis: Azure OpenAI Integration ist geplant. Aktuell wird die Standard OpenAI API verwendet (Subscription-Limitierungen).
+------------------------------------------------------------------------
 
----
+## ☁️ Deployment auf Azure Container Apps
 
-## ✨ Features
+![Azure Deployment](/screenshots/Advisor-Container-Running.png)
 
-### 🤖 AI Cloud Advisor
+Containerisierte Anwendung erfolgreich auf Azure deployed.
 
-- Architektur-Empfehlungen für Azure Workloads
-- Security / Reliability / Cost Trade-offs
-- Deployment-Guidance
-- Cloud Best Practices
+Demonstriert:
 
-### 📚 Knowledge Base Integration
+-   Azure Container Apps
+-   Azure Resource Management
+-   Produktionsnahe Bereitstellung
 
-- Kontextbasierte Antworten über eigene KB (`/kb`)
-- Erweiterbare Dokumentationsbasis
-- RAG-Workflow implementiert
+------------------------------------------------------------------------
 
-### ⚙️ DevOps-orientiertes Design
+# 🎯 Projektüberblick
 
-- Container-first Ansatz
-- Environment-basierte Konfiguration
-- CI/CD Deployment vorbereitet
+Der Azure AI Knowledge Assistant fungiert als interner
+Cloud‑Engineering‑Assistent und unterstützt bei:
 
-### 🖥️ Chat Interface
+-   Azure Architekturentscheidungen
+-   Security / Reliability / Cost Trade‑offs
+-   Deployment‑Strategien
+-   Troubleshooting typischer Azure‑Setups
+-   Schnelleren Projektstarts im Azure‑Umfeld
+-   Kontextbasierter Beratung über eine eigene Knowledge Base (RAG)
 
-- Streamlit Chat UI
-- Beispielprompts integriert
-- Architektur-Beratungsszenarien simuliert
+Das System kombiniert Large Language Models mit kuratiertem Cloud‑Wissen
+zur fundierten Entscheidungsunterstützung.
 
----
+------------------------------------------------------------------------
 
-## 📂 Repository Struktur
+# 🏗️ Architektur & technische Highlights
 
+-   Python‑basierte Chatbot‑Applikation (Streamlit)
+-   Container‑ready Architektur (Docker)
+-   Deployment auf Azure Container Apps
+-   Integration mit Azure Container Registry (ACR)
+-   GitHub Actions CI/CD Pipeline
+-   Retrieval Augmented Generation (RAG) über lokale Knowledge Base
+-   Modularer Retriever (`retriever.py`)
+-   Trennung von Code, Prompts und Knowledge Base
+-   Environment‑basierte Konfiguration
 
-.
-├── app.py # Hauptanwendung (Streamlit Chatbot)
-├── retriever.py # Knowledge Base Retrieval
-├── kb/ # Knowledge Base Inhalte
-├── prompts/ # Prompt Engineering Files
-├── Dockerfile # Container Build Setup
-├── requirements.txt
-└── .github/workflows # CI/CD Pipelines
+------------------------------------------------------------------------
 
+# 🧱 Architekturdiagramm
 
----
+``` mermaid
+flowchart LR
+  User --> StreamlitApp[Streamlit App (app.py)]
+  StreamlitApp --> LLM[OpenAI API]
+  StreamlitApp --> Retriever[Retriever Module]
+  Retriever --> KB[(Knowledge Base /kb)]
+  GitHub --> CI[GitHub Actions]
+  CI --> ACR[Azure Container Registry]
+  ACR --> AzureApp[Azure Container App]
+```
 
-## 🚀 Lokale Nutzung
+------------------------------------------------------------------------
 
-### Dependencies installieren
+# ⚙️ Tech Stack
 
-```bash
+## Core Technologien
+
+-   Python
+-   Streamlit
+-   OpenAI API
+-   Dotenv Environment Management
+-   Retrieval Augmented Generation (RAG)
+
+## Cloud & DevOps Fokus
+
+-   Docker Containerisierung
+-   Azure Container Registry (ACR)
+-   Azure Container Apps
+-   GitHub Actions CI/CD
+-   Environment Secret Handling
+-   Cloud Deployment Workflows
+
+------------------------------------------------------------------------
+
+# ✨ Features
+
+## 🤖 AI Cloud Advisor
+
+-   Architektur‑Empfehlungen für Azure Workloads
+-   Security / Reliability / Cost Trade‑offs
+-   Deployment Guidance
+-   Best Practice Empfehlungen
+
+## 📚 Knowledge Base Integration
+
+-   Kontextbasierte Antwortgenerierung
+-   Erweiterbare `/kb` Struktur
+-   Autoritativer Kontext im System Prompt
+-   Modularer Retrieval‑Ansatz
+
+## ⚙️ DevOps‑orientiertes Design
+
+-   Container‑first Ansatz
+-   Reproduzierbare Builds
+-   CI/CD Deployment Pipeline
+-   Azure‑native Deployment Workflow
+
+------------------------------------------------------------------------
+
+# 📂 Repository Struktur
+
+    .
+    ├── app.py
+    ├── retriever.py
+    ├── kb/
+    ├── prompts/
+    ├── Dockerfile
+    ├── requirements.txt
+    ├── .github/workflows/
+    └── screenshots/
+
+------------------------------------------------------------------------
+
+# 🚀 Lokale Nutzung
+
+## 1️⃣ Dependencies installieren
+
+``` bash
 pip install -r requirements.txt
-Environment konfigurieren
+```
 
-.env Datei erstellen:
+## 2️⃣ Environment konfigurieren
 
-OPENAI_API_KEY=your_api_key
-OPENAI_MODEL=gpt-4o-mini
-Anwendung starten
+`.env` Datei erstellen:
+
+    OPENAI_API_KEY=your_api_key
+    OPENAI_MODEL=gpt-4o-mini
+
+## 3️⃣ Anwendung starten
+
+``` bash
 streamlit run app.py
-🐳 Container Deployment
+```
 
-Image bauen:
+------------------------------------------------------------------------
 
+# 🐳 Container Deployment
+
+## Image bauen
+
+``` bash
 docker build -t azure-ai-assistant .
+```
 
-Container starten:
+## Container starten
 
+``` bash
 docker run -p 8501:8501 --env-file .env azure-ai-assistant
-🔄 CI/CD Workflow (Azure Fokus)
+```
 
-Typischer Deployment Ablauf:
+------------------------------------------------------------------------
 
-Push ins GitHub Repository
+# 🔄 CI/CD Workflow (Azure Fokus)
 
-GitHub Actions Build Pipeline
+Deployment Ablauf:
 
-Push in Azure Container Registry
+1.  Push ins GitHub Repository
+2.  GitHub Actions startet Build
+3.  Docker Image wird erzeugt
+4.  Push in Azure Container Registry (ACR)
+5.  Deployment auf Azure Container Apps
 
-Deployment auf Azure Container App / Web App
+Demonstrierte Kompetenzen:
 
-Damit werden demonstriert:
+-   Container Lifecycle Management
+-   Registry Integration
+-   Cloud Deployment Automatisierung
+-   Secret Handling über Environment Variablen
+-   DevOps Best Practices
 
-Container Lifecycle Verständnis
+------------------------------------------------------------------------
 
-Cloud Deployment Automatisierung
+# 🔮 Weiterentwicklung
 
-Azure Registry Integration
+-   Azure OpenAI Integration
+-   Authentication / RBAC
+-   Monitoring & Observability (Application Insights)
+-   Infrastructure as Code (Terraform / Bicep)
+-   Erweiterte Retrieval‑Strategien (Embeddings)
 
-DevOps Best Practices
+------------------------------------------------------------------------
 
-🧪 Projektstatus
+# 💡 Engineering Fokus
 
-Aktuell:
+Dieses Projekt demonstriert:
 
-MVP funktionsfähig
-
-Knowledge Base integriert
-
-Lokale Nutzung stabil
-
-Container-Deployment vorbereitet
-
-CI/CD Struktur vorhanden
-
-🔮 Geplante Erweiterungen
-
-Azure Produktivdeployment
-
-Authentifizierung / Access Control
-
-Erweiterung der Knowledge Base
-
-Azure OpenAI Integration
-
-Observability (Monitoring / Logging)
-
-Infrastructure as Code (Terraform/Bicep)
-
-💡 Ziel des Projekts
-
-Demonstration von:
-
-Cloud Engineering Verständnis
-
-Azure Architekturdenken
-
-AI-gestützten Engineering-Workflows
-
-Container-basierten Deploymentprozessen
-
-DevOps Automatisierung
-
-Dieses Projekt dient als Portfolio-Nachweis für eine Junior-Position im Azure / Cloud / DevOps Umfeld.
+-   Cloud Architecture Thinking
+-   Azure Deployment Workflows
+-   Containerisierung & DevOps
+-   AI‑gestützte Engineering‑Prozesse
+-   Strukturierte Projektorganisation
+-   Produktionsnahe Cloud‑Anwendung
