@@ -1,4 +1,4 @@
-# Azure AI Knowledge Assistant ☁️🤖
+# Azure AI Knowledge Assistant 
 
 Ein AI‑gestützter Azure Architecture Advisor zur Unterstützung von Cloud
 Engineers und DevOps‑Teams bei Architekturentscheidungen,
@@ -20,7 +20,7 @@ Moderne, strukturierte Benutzeroberfläche mit Architektur‑Fokus.
 
 ------------------------------------------------------------------------
 
-## 🧠 Architekturberatung -- Beispielantwort (Teil 1)
+##  Architekturberatung -- Beispielantwort (Teil 1)
 
 ![Architecture Response 1](/screenshots/Advisor-Answer-Part-1.png)
 
@@ -33,7 +33,7 @@ Strukturierte Antwort mit:
 
 ------------------------------------------------------------------------
 
-## 📊 Architekturberatung -- Skalierung, Kosten & Risiken (Teil 2)
+##  Architekturberatung -- Skalierung, Kosten & Risiken (Teil 2)
 
 ![Architecture Response 2](/screenshots/Advisor-Answer-Part-2.png)
 
@@ -47,7 +47,7 @@ Erweiterte Analyse mit:
 
 ------------------------------------------------------------------------
 
-## ☁️ Deployment auf Azure Container Apps
+##  Deployment auf Azure Container Apps
 
 ![Azure Deployment](/screenshots/Advisor-Container-Running.png)
 
@@ -61,7 +61,7 @@ Demonstriert:
 
 ------------------------------------------------------------------------
 
-# 🎯 Projektüberblick
+#  Projektüberblick
 
 Der Azure AI Knowledge Assistant fungiert als interner
 Cloud‑Engineering‑Assistent und unterstützt bei:
@@ -78,7 +78,7 @@ zur fundierten Entscheidungsunterstützung.
 
 ------------------------------------------------------------------------
 
-# 🏗️ Architektur & technische Highlights
+#  Architektur & technische Highlights
 
 -   Python‑basierte Chatbot‑Applikation (Streamlit)
 -   Container‑ready Architektur (Docker)
@@ -92,7 +92,7 @@ zur fundierten Entscheidungsunterstützung.
 
 ------------------------------------------------------------------------
 
-# 🧱 Architekturdiagramm
+#  Architekturdiagramm
 
 ``` mermaid
 flowchart LR
@@ -107,7 +107,7 @@ flowchart LR
 
 ------------------------------------------------------------------------
 
-# ⚙️ Tech Stack
+#  Tech Stack
 
 ## Core Technologien
 
@@ -128,23 +128,23 @@ flowchart LR
 
 ------------------------------------------------------------------------
 
-# ✨ Features
+#  Features
 
-## 🤖 AI Cloud Advisor
+##  AI Cloud Advisor
 
 -   Architektur‑Empfehlungen für Azure Workloads
 -   Security / Reliability / Cost Trade‑offs
 -   Deployment Guidance
 -   Best Practice Empfehlungen
 
-## 📚 Knowledge Base Integration
+##  Knowledge Base Integration
 
 -   Kontextbasierte Antwortgenerierung
 -   Erweiterbare `/kb` Struktur
 -   Autoritativer Kontext im System Prompt
 -   Modularer Retrieval‑Ansatz
 
-## ⚙️ DevOps‑orientiertes Design
+##  DevOps‑orientiertes Design
 
 -   Container‑first Ansatz
 -   Reproduzierbare Builds
@@ -153,7 +153,7 @@ flowchart LR
 
 ------------------------------------------------------------------------
 
-# 📂 Repository Struktur
+#  Repository Struktur
 
     .
     ├── app.py
@@ -167,22 +167,22 @@ flowchart LR
 
 ------------------------------------------------------------------------
 
-# 🚀 Lokale Nutzung
+#  Lokale Nutzung
 
-## 1️⃣ Dependencies installieren
+##  Dependencies installieren
 
 ``` bash
 pip install -r requirements.txt
 ```
 
-## 2️⃣ Environment konfigurieren
+##  Environment konfigurieren
 
 `.env` Datei erstellen:
 
     OPENAI_API_KEY=your_api_key
     OPENAI_MODEL=gpt-4o-mini
 
-## 3️⃣ Anwendung starten
+##  Anwendung starten
 
 ``` bash
 streamlit run app.py
@@ -190,7 +190,7 @@ streamlit run app.py
 
 ------------------------------------------------------------------------
 
-# 🐳 Container Deployment
+#  Container Deployment
 
 ## Image bauen
 
@@ -206,7 +206,7 @@ docker run -p 8501:8501 --env-file .env azure-ai-assistant
 
 ------------------------------------------------------------------------
 
-# 🔄 CI/CD Workflow (Azure Fokus)
+#  CI/CD Workflow (Azure Fokus)
 
 Deployment Ablauf:
 
@@ -226,7 +226,7 @@ Demonstrierte Kompetenzen:
 
 ------------------------------------------------------------------------
 
-# 🔮 Weiterentwicklung
+#  Weiterentwicklung
 
 -   Azure OpenAI Integration
 -   Authentication / RBAC
@@ -236,7 +236,7 @@ Demonstrierte Kompetenzen:
 
 ------------------------------------------------------------------------
 
-# 💡 Engineering Fokus
+#  Engineering Fokus
 
 Dieses Projekt demonstriert:
 
