@@ -16,11 +16,11 @@ mit Fokus auf Azure.
 Der Azure AI Knowledge Assistant fungiert als interner
 Cloud-Engineering-Assistent und unterstützt bei:
 
--   Azure Architekturentscheidungen\
--   Deployment-Planung und Best Practices\
--   Troubleshooting von Cloud-Setups\
--   Schnelleren Projektstarts im Azure-Umfeld\
--   Kontextbasierter Beratung über eine Knowledge Base (RAG)\
+-   Azure Architekturentscheidungen
+-   Deployment-Planung und Best Practices
+-   Troubleshooting von Cloud-Setups
+-   Schnelleren Projektstarts im Azure-Umfeld
+-   Kontextbasierter Beratung über eine Knowledge Base (RAG)
 -   Automatischer Generierung visueller Architekturdiagramme (Mermaid)
 
 Neben textuellen Empfehlungen erzeugt der Assistant automatisch
@@ -65,15 +65,15 @@ direkt im UI dargestellt.
 
 ## Architektur und technische Highlights
 
--   Python-basierte Chatbot-Applikation\
--   Streamlit UI\
--   Container-ready Architektur (Docker)\
+-   Python-basierte Chatbot-Applikation
+-   Streamlit UI
+-   Container-ready Architektur (Docker)
 -   Azure Deployment vorbereitet (Container Apps / Web App / ACR
-    Workflow)\
--   Retrieval Augmented Generation über lokale Knowledge Base\
--   Dynamische Mermaid-Diagramm-Generierung\
--   Prompt-Separation zur Wartbarkeit (`/prompts`)\
--   Modularer Retriever (`retriever.py`)\
+    Workflow)
+-   Retrieval Augmented Generation über lokale Knowledge Base
+-   Dynamische Mermaid-Diagramm-Generierung
+-   Prompt-Separation zur Wartbarkeit (`/prompts`)
+-   Modularer Retriever (`retriever.py`)
 -   GitHub-basierte CI/CD Integration
 
 ------------------------------------------------------------------------
@@ -82,18 +82,18 @@ direkt im UI dargestellt.
 
 ### Core Technologien
 
--   Python\
--   Streamlit\
--   OpenAI API\
--   Mermaid Diagram Rendering\
+-   Python
+-   Streamlit
+-   OpenAI API
+-   Mermaid Diagram Rendering
 -   Knowledge Base Retrieval (RAG)
 
 ### Cloud / DevOps Fokus
 
--   Docker Containerisierung\
--   Azure Container Registry (ACR)\
--   GitHub Actions CI/CD Pipeline\
--   Azure Container Apps\
+-   Docker Containerisierung
+-   Azure Container Registry (ACR)
+-   GitHub Actions CI/CD Pipeline
+-   Azure Container Apps
 -   Azure Monitoring Stack
 
 ------------------------------------------------------------------------
@@ -127,9 +127,9 @@ direkt im UI dargestellt.
 
 Dieses Projekt demonstriert:
 
--   Architekturdenken im Azure-Kontext\
--   Integration von AI in Cloud-Engineering-Workflows\
--   Automatisierte Diagramm-Erstellung mittels LLM\
--   Containerisierung und Deploymentprozesse\
--   CI/CD-Integration mit GitHub Actions\
+-   Architekturdenken im Azure-Kontext
+-   Integration von AI in Cloud-Engineering-Workflows
+-   Automatisierte Diagramm-Erstellung mittels LLM
+-   Containerisierung und Deploymentprozesse
+-   CI/CD-Integration mit GitHub Actions
 -   Strukturierte technische Dokumentation
