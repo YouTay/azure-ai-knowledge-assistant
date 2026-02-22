@@ -20,40 +20,46 @@ st.set_page_config(
 )
 
 # ----------------------------
-# ChatGPT-like Light Azure Theme (minimal + readable)
+# UI Theme: "Google AI Studio / modern SaaS" inspired
 # ----------------------------
 st.markdown(
     """
 <style>
 :root{
-  /* Light azure canvas */
-  --bg0:#F7FBFF;
-  --bg1:#EAF4FF;
+  /* Canvas */
+  --bg0:#F6F8FF;
+  --bg1:#EEF3FF;
 
   /* Surfaces */
   --surface:#FFFFFF;
-  --surface2: rgba(255,255,255,0.92);
+  --surface2: rgba(255,255,255,0.86);
+  --surface3: rgba(255,255,255,0.72);
 
   /* Text */
   --text:#0B1220;
-  --muted: rgba(11,18,32,0.62);
+  --muted: rgba(11,18,32,0.60);
 
-  /* Borders */
+  /* Borders / Shadows */
   --border: rgba(15,23,42,0.12);
+  --shadow: 0 18px 50px rgba(15,23,42,0.08);
 
   /* Accents */
-  --azure:#0078D4;
-  --royal:#7C3AED;
-  --focus: rgba(0,120,212,0.18);
+  --azure:#2563EB;      /* more "modern azure" */
+  --azure2:#3B82F6;
+  --violet:#7C3AED;
+  --violet2:#A855F7;
 
-  --radius:14px;
+  --radius-xl: 26px;
+  --radius-lg: 18px;
+  --radius-md: 14px;
 }
 
 /* App background */
 .stApp{
   background:
-    radial-gradient(900px 650px at 15% 10%, rgba(0,120,212,0.10), transparent 60%),
-    radial-gradient(900px 650px at 85% 12%, rgba(124,58,237,0.08), transparent 62%),
+    radial-gradient(900px 650px at 18% 8%, rgba(37,99,235,0.14), transparent 60%),
+    radial-gradient(900px 650px at 82% 10%, rgba(124,58,237,0.14), transparent 62%),
+    radial-gradient(900px 650px at 70% 90%, rgba(168,85,247,0.10), transparent 64%),
     linear-gradient(180deg, var(--bg0), var(--bg1));
   color: var(--text);
 }
@@ -63,16 +69,16 @@ st.markdown(
 header {visibility:hidden;}
 footer {visibility:hidden;}
 
-/* Layout: center content like chat apps */
+/* Make content feel like a rounded "app card" */
 .block-container{
-  max-width: 980px;
-  padding-top: 1.0rem;
-  padding-bottom: 2.4rem;
+  max-width: 1220px;
+  padding-top: 1.1rem;
+  padding-bottom: 2.2rem;
 }
 
-/* Sidebar: subtle, light */
+/* Sidebar styling */
 section[data-testid="stSidebar"]{
-  background: rgba(255,255,255,0.70);
+  background: rgba(255,255,255,0.60);
   border-right: 1px solid var(--border);
   backdrop-filter: blur(10px);
 }
@@ -86,201 +92,216 @@ html, body, [class*="st-"], p, li, span, div{
 }
 h1,h2,h3,h4{ color: var(--text) !important; }
 
-/* Minimal top header */
+/* "App frame" container card look */
+.az-frame{
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(15,23,42,0.10);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+  padding: 20px 20px 16px 20px;
+}
+
+/* Top bar inside frame */
 .az-topbar{
-  background: rgba(255,255,255,0.86);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 16px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
-  box-shadow: 0 10px 30px rgba(15,23,42,0.06);
+  gap: 12px;
+  margin-bottom: 8px;
 }
 .az-brand{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap: 12px;
   min-width: 0;
 }
-.az-dot{
-  width:10px; height:10px; border-radius:999px;
-  background: linear-gradient(90deg, var(--azure), var(--royal));
+.az-logo{
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color: white;
+  background: linear-gradient(135deg, var(--azure), var(--violet));
+  box-shadow: 0 14px 30px rgba(37,99,235,0.20);
 }
-.az-title{
-  font-size: 16px;
-  font-weight: 750;
+.az-brand-title{
+  font-weight: 800;
   letter-spacing: 0.2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 18px;
+  line-height: 1.05;
 }
-.az-sub{
-  margin-top: 2px;
-  font-size: 12px;
+.az-brand-sub{
+  font-size: 12.5px;
   color: var(--muted);
+  margin-top: 2px;
+}
+
+/* "Share" button (cosmetic) */
+.az-share{
+  border: 1px solid rgba(15,23,42,0.10);
+  background: rgba(255,255,255,0.70);
+  border-radius: 999px;
+  padding: 8px 12px;
+  color: rgba(11,18,32,0.80);
+  font-size: 12.5px;
 }
 
 /* Sidebar cards */
 .az-card{
-  background: rgba(255,255,255,0.86);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
+  background: rgba(255,255,255,0.80);
+  border: 1px solid rgba(15,23,42,0.10);
+  border-radius: var(--radius-lg);
   padding: 14px 14px;
-  box-shadow: 0 10px 26px rgba(15,23,42,0.05);
+  box-shadow: 0 12px 28px rgba(15,23,42,0.06);
+}
+.az-card-title{
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: rgba(11,18,32,0.55);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.az-kv{
+  font-size: 13px;
+  color: rgba(11,18,32,0.80);
+  line-height: 1.55;
 }
 
 /* Buttons */
 .stButton button{
-  border-radius: 12px !important;
-  border: 1px solid rgba(0,0,0,0.06) !important;
+  border-radius: 14px !important;
+  border: 1px solid rgba(15,23,42,0.10) !important;
+  background: linear-gradient(90deg, var(--azure), var(--violet)) !important;
   color: white !important;
-  background: linear-gradient(90deg, var(--azure), var(--royal)) !important;
-  padding: 0.52rem 0.85rem !important;
+  padding: 0.55rem 0.9rem !important;
+  box-shadow: 0 14px 30px rgba(37,99,235,0.18);
 }
 .stButton button:hover{ filter: brightness(1.05); }
 
-/* Inputs */
-.stTextInput input, .stTextArea textarea{
-  background: rgba(255,255,255,0.98) !important;
-  border: 1px solid rgba(15,23,42,0.14) !important;
-  color: var(--text) !important;
-  border-radius: 12px !important;
-}
-.stTextInput input:focus, .stTextArea textarea:focus{
-  box-shadow: 0 0 0 3px var(--focus) !important;
-  border-color: rgba(0,120,212,0.40) !important;
-}
+/* Secondary/ghost buttons: we fake via markdown + Streamlit is limited.
+   We'll just keep primary buttons consistent. */
 
-/* Chat area spacing */
-div[data-testid="stChatMessage"]{
-  padding-top: 0.1rem;
-  padding-bottom: 0.1rem;
-}
-
-/* Chat bubbles (ChatGPT-ish) */
-div[data-testid="stChatMessage"] [data-testid="stChatMessageContent"]{
-  background: rgba(255,255,255,0.95) !important;
-  border: 1px solid rgba(15,23,42,0.10) !important;
+/* Selectbox look */
+div[data-baseweb="select"] > div{
   border-radius: 14px !important;
-  padding: 0.85rem 1.0rem !important;
-  color: var(--text) !important;
-  box-shadow: 0 8px 22px rgba(15,23,42,0.05);
+  background: rgba(255,255,255,0.92) !important;
+  border: 1px solid rgba(15,23,42,0.12) !important;
 }
 
-/* Ensure markdown inside bubbles stays dark */
+/* Chat bubbles */
+div[data-testid="stChatMessage"]{
+  padding-top: 0.15rem;
+  padding-bottom: 0.15rem;
+}
+div[data-testid="stChatMessage"] [data-testid="stChatMessageContent"]{
+  background: rgba(255,255,255,0.90) !important;
+  border: 1px solid rgba(15,23,42,0.10) !important;
+  border-radius: 18px !important;
+  padding: 0.9rem 1.05rem !important;
+  box-shadow: 0 10px 24px rgba(15,23,42,0.06);
+}
 div[data-testid="stChatMessage"] [data-testid="stChatMessageContent"] *{
   color: var(--text) !important;
 }
 
-/* User bubble slightly tinted azure */
+/* User bubble tinted */
 div[data-testid="stChatMessage"][aria-label="Chat message from user"] [data-testid="stChatMessageContent"]{
-  background: rgba(0,120,212,0.10) !important;
-  border-color: rgba(0,120,212,0.22) !important;
+  background: rgba(37,99,235,0.10) !important;
+  border-color: rgba(37,99,235,0.20) !important;
 }
 
-/* Assistant bubble neutral + subtle purple edge */
+/* Assistant bubble slight violet edge */
 div[data-testid="stChatMessage"][aria-label="Chat message from assistant"] [data-testid="stChatMessageContent"]{
-  background: rgba(255,255,255,0.96) !important;
-  border-color: rgba(124,58,237,0.18) !important;
+  background: rgba(255,255,255,0.92) !important;
+  border-color: rgba(124,58,237,0.16) !important;
 }
 
-/* Chat input (bottom) - readable and clean */
+/* Chat input */
 div[data-testid="stChatInput"]{
   background: transparent !important;
 }
 div[data-testid="stChatInput"] textarea{
-  background: rgba(255,255,255,0.98) !important;
-  border: 1px solid rgba(15,23,42,0.16) !important;
+  background: rgba(255,255,255,0.94) !important;
+  border: 1px solid rgba(15,23,42,0.12) !important;
   color: var(--text) !important;
-  border-radius: 14px !important;
+  border-radius: 18px !important;
+  padding-top: 0.65rem !important;
+}
+div[data-testid="stChatInput"] textarea:focus{
+  box-shadow: 0 0 0 4px rgba(37,99,235,0.16) !important;
+  border-color: rgba(37,99,235,0.32) !important;
 }
 div[data-testid="stChatInput"] textarea::placeholder{
   color: rgba(11,18,32,0.45) !important;
 }
-div[data-testid="stChatInput"] textarea:focus{
-  box-shadow: 0 0 0 3px var(--focus) !important;
-  border-color: rgba(0,120,212,0.45) !important;
+
+/* Quick action chips (markdown buttons look) */
+.az-chips{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+}
+.az-chip{
+  display:inline-flex;
+  align-items:center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(15,23,42,0.10);
+  color: rgba(11,18,32,0.82);
+  font-size: 13px;
+  box-shadow: 0 10px 22px rgba(15,23,42,0.05);
 }
 
-/* Code blocks */
-pre{
-  background: rgba(15,23,42,0.06) !important;
-  border: 1px solid rgba(15,23,42,0.10) !important;
-  border-radius: 12px !important;
+/* Hero state */
+.az-hero{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 28px 10px 14px 10px;
+  text-align:center;
 }
-code{ color: var(--text) !important; }
+.az-hero-icon{
+  width: 88px;
+  height: 88px;
+  border-radius: 28px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color: white;
+  background: linear-gradient(135deg, var(--azure2), var(--violet2));
+  box-shadow: 0 18px 45px rgba(124,58,237,0.18);
+  margin-bottom: 14px;
+  font-size: 34px;
+}
+.az-hero-title{
+  font-size: 40px;
+  font-weight: 900;
+  letter-spacing: -0.6px;
+  line-height: 1.02;
+  margin: 0;
+}
+.az-hero-sub{
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--muted);
+}
 
-/* Links */
-a{ color: rgba(0,120,212,0.95) !important; }
+/* Small helpers */
+.az-tip{
+  font-size: 12px;
+  color: rgba(11,18,32,0.55);
+}
 </style>
 """,
     unsafe_allow_html=True,
 )
-
-# ----------------------------
-# Header (ChatGPT-like minimal, no right column)
-# ----------------------------
-st.markdown(
-    """
-<div class="az-topbar">
-  <div class="az-brand">
-    <div class="az-dot"></div>
-    <div style="min-width:0;">
-      <div class="az-title">Azure Architecture Advisor</div>
-      <div class="az-sub">Ask for architectures, tradeoffs, security, reliability, cost</div>
-    </div>
-  </div>
-</div>
-""",
-    unsafe_allow_html=True,
-)
-
-st.write("")
-
-# ----------------------------
-# Sidebar
-# ----------------------------
-with st.sidebar:
-    st.markdown(
-        """
-<div class="az-card">
-  <div style="font-size:12px; letter-spacing:0.08em; color: rgba(11,18,32,0.55); text-transform: uppercase;">
-    Controls
-  </div>
-  <div style="margin-top:10px; font-size:13px; color: rgba(11,18,32,0.78); line-height:1.45;">
-    Advisor mode: <b>Azure Architecture</b><br/>
-    Default lens: <b>Security → Reliability → Cost</b>
-  </div>
-</div>
-""",
-        unsafe_allow_html=True,
-    )
-
-    st.write("")
-
-    example = st.selectbox(
-        "Example prompts",
-        [
-            "B2B API, EU-only, sensitive data, moderate traffic, small team, RTO 1h",
-            "Startup SaaS, global users, spiky traffic, budget-sensitive, low-ops team",
-            "Healthcare internal system, GDPR, EU-only, RTO 1h, strict security & audit",
-        ],
-        index=0,
-    )
-
-    colA, colB = st.columns(2)
-    with colA:
-        if st.button("Insert"):
-            st.session_state["_prefill"] = example
-    with colB:
-        if st.button("Clear chat"):
-            st.session_state.messages = []
-            st.rerun()
-
-    st.write("")
-    st.caption("Tip: Add constraints (region, RTO/RPO, identity, data sensitivity, throughput, budget).")
 
 # ----------------------------
 # OpenAI Key (hardened)
@@ -334,7 +355,120 @@ def build_context(query: str) -> str:
 if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "system", "content": SYSTEM_PROMPT}]
 
+# ----------------------------
+# Sidebar
+# ----------------------------
+with st.sidebar:
+    # Brand block
+    st.markdown(
+        """
+<div class="az-card" style="padding:14px 14px 12px 14px;">
+  <div style="display:flex; align-items:center; gap:10px;">
+    <div class="az-logo" style="width:42px; height:42px; border-radius:16px;">☁️</div>
+    <div style="min-width:0;">
+      <div style="font-weight:900; letter-spacing:0.2px;">AZURE-G</div>
+      <div style="font-size:12px; color: rgba(11,18,32,0.55); margin-top:2px;">Azure Architecture Advisor</div>
+    </div>
+  </div>
+</div>
+""",
+        unsafe_allow_html=True,
+    )
+
+    st.write("")
+
+    st.markdown(
+        """
+<div class="az-card">
+  <div class="az-card-title">Controls</div>
+  <div class="az-kv">
+    Advisor mode: <b>Azure Architecture</b><br/>
+    Default lens: <b>Security → Reliability → Cost</b>
+  </div>
+</div>
+""",
+        unsafe_allow_html=True,
+    )
+
+    st.write("")
+
+    example = st.selectbox(
+        "Example prompts",
+        [
+            "B2B API, EU-only, sensitive data, moderate traffic, small team, RTO 1h",
+            "Startup SaaS, global users, spiky traffic, budget-sensitive, low-ops team",
+            "Healthcare internal system, GDPR, EU-only, RTO 1h, strict security & audit",
+        ],
+        index=0,
+    )
+
+    colA, colB = st.columns(2)
+    with colA:
+        if st.button("Insert"):
+            st.session_state["_prefill"] = example
+    with colB:
+        if st.button("Clear chat"):
+            st.session_state.messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+            st.rerun()
+
+    st.write("")
+    st.caption("Tip: Add constraints (region, RTO/RPO, identity, data sensitivity, throughput, budget).")
+
+# ----------------------------
+# Main Frame (topbar + hero/chat)
+# ----------------------------
+st.markdown(
+    """
+<div class="az-frame">
+  <div class="az-topbar">
+    <div class="az-brand">
+      <div class="az-logo">☁️</div>
+      <div style="min-width:0;">
+        <div class="az-brand-title">Azure Architecture Advisor</div>
+        <div class="az-brand-sub">Ask for architectures, tradeoffs, security, reliability, cost</div>
+      </div>
+    </div>
+    <div class="az-share">Share</div>
+  </div>
+</div>
+""",
+    unsafe_allow_html=True,
+)
+
+st.write("")
+
+# ----------------------------
+# Hero state (only system message exists)
+# ----------------------------
+only_system = len(st.session_state.messages) == 1
+
+if only_system:
+    st.markdown(
+        """
+<div class="az-frame">
+  <div class="az-hero">
+    <div class="az-hero-icon">☁️</div>
+    <div class="az-hero-title">Azure Architecture Advisor</div>
+    <div class="az-hero-sub">Ask for architectures, tradeoffs, security, reliability, cost</div>
+    <div class="az-chips" style="margin-top:14px;">
+      <div class="az-chip">🗂️ Architecture</div>
+      <div class="az-chip">🛡️ Security</div>
+      <div class="az-chip">☁️ Deployment</div>
+      <div class="az-chip">👥 Governance</div>
+    </div>
+    <div class="az-tip" style="margin-top:12px;">
+      Tip: Add constraints (region, RTO/RPO, identity, data sensitivity, throughput, budget).
+    </div>
+  </div>
+</div>
+""",
+        unsafe_allow_html=True,
+    )
+    st.write("")
+
+# ----------------------------
 # Show chat history
+# ----------------------------
 for m in st.session_state.messages:
     if m["role"] != "system":
         with st.chat_message(m["role"]):
@@ -346,7 +480,7 @@ for m in st.session_state.messages:
 prefill = st.session_state.pop("_prefill", None)
 user_msg = st.chat_input("Message Azure Architecture Advisor...")
 
-# Streamlit can't truly prefill st.chat_input; this makes the insert act like "send once".
+# Streamlit can't truly prefill st.chat_input; we emulate "insert then send once".
 if prefill and not user_msg:
     st.info(f"Inserted: {prefill}")
     user_msg = prefill
