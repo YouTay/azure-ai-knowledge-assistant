@@ -94,15 +94,15 @@ zur fundierten Entscheidungsunterstützung.
 
 #  Architekturdiagramm
 
-``` mermaid
+```mermaid
 flowchart LR
-  User --> StreamlitApp[Streamlit App (app.py)]
-  StreamlitApp --> LLM[OpenAI API]
-  StreamlitApp --> Retriever[Retriever Module]
-  Retriever --> KB[(Knowledge Base /kb)]
-  GitHub --> CI[GitHub Actions]
-  CI --> ACR[Azure Container Registry]
-  ACR --> AzureApp[Azure Container App]
+    User --> StreamlitApp["Streamlit App"]
+    StreamlitApp --> LLM["OpenAI API"]
+    StreamlitApp --> Retriever["Retriever Module"]
+    Retriever --> KB["Knowledge Base"]
+    GitHub --> CI["GitHub Actions"]
+    CI --> ACR["Azure Container Registry"]
+    ACR --> AzureApp["Azure Container App"]
 ```
 
 ------------------------------------------------------------------------
