@@ -20,211 +20,176 @@ st.set_page_config(
 )
 
 # ----------------------------
-# Minimal Futuristic (Azure Advisor) Theme
+# Minimal Azure + Royal Purple Theme (stable Streamlit CSS)
 # ----------------------------
 st.markdown(
     """
 <style>
+/* --------- Design Tokens --------- */
 :root{
-  --bg0:#060814;
-  --bg1:#080B1A;
-  --panel: rgba(255,255,255,0.06);
-  --panel2: rgba(255,255,255,0.08);
-  --border: rgba(180,190,255,0.16);
-  --border2: rgba(170,120,255,0.22);
-  --text: rgba(235,238,255,0.92);
-  --muted: rgba(235,238,255,0.70);
-  --muted2: rgba(235,238,255,0.58);
-  --accent1:#3AA9FF;  /* azure-ish blue */
-  --accent2:#8A5CFF;  /* neon purple */
-  --accent3:#2EF2FF;  /* cyan glow */
-  --radius: 18px;
+  --bg: #0b0f19;            /* near-black */
+  --panel: #111827;         /* slate panel */
+  --panel2: #0f172a;        /* deeper */
+  --text: rgba(255,255,255,0.92);
+  --muted: rgba(255,255,255,0.68);
+  --border: rgba(255,255,255,0.10);
+
+  --azure: #0078D4;         /* Azure blue */
+  --royal: #7C3AED;         /* royal purple */
+  --focus: rgba(0,120,212,0.35);
+
+  --radius: 14px;
 }
 
-/* App background: clean, premium, purple/blue blobs */
+/* --------- App Background --------- */
 .stApp{
+  background: var(--bg);
   color: var(--text);
-  background:
-    radial-gradient(900px 700px at 18% 12%, rgba(58,169,255,0.16), transparent 60%),
-    radial-gradient(900px 700px at 82% 18%, rgba(138,92,255,0.18), transparent 62%),
-    radial-gradient(900px 900px at 50% 95%, rgba(46,242,255,0.10), transparent 60%),
-    linear-gradient(180deg, var(--bg0) 0%, var(--bg1) 100%);
 }
 
-/* Subtle scanlines + vignette overlay */
-.stApp::before{
-  content:"";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      rgba(255,255,255,0.03) 0px,
-      rgba(255,255,255,0.03) 1px,
-      rgba(0,0,0,0) 2px,
-      rgba(0,0,0,0) 6px
-    );
-  opacity: 0.10;
-  mix-blend-mode: overlay;
-}
-.stApp::after{
-  content:"";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(1200px 900px at 50% 15%, rgba(0,0,0,0.0), rgba(0,0,0,0.55));
-  opacity: 0.65;
-}
-
-/* Layout spacing */
+/* Keep layout predictable */
 .block-container{
-  padding-top: 1.1rem;
+  max-width: 1180px;
+  padding-top: 1.0rem;
   padding-bottom: 2.0rem;
-  max-width: 1200px;
 }
 
-/* Headers */
-h1, h2, h3, h4{
-  color: var(--text) !important;
-  letter-spacing: 0.2px;
-}
+/* Hide Streamlit chrome */
+#MainMenu {visibility: hidden;}
+header {visibility: hidden;}
+footer {visibility: hidden;}
 
-/* Hide footer */
-footer { visibility: hidden; }
-
-/* Sidebar */
+/* --------- Sidebar --------- */
 section[data-testid="stSidebar"]{
-  background: rgba(6,8,20,0.72);
-  border-right: 1px solid rgba(180,190,255,0.10);
-  backdrop-filter: blur(10px);
+  background: #0a0e17;
+  border-right: 1px solid var(--border);
 }
 section[data-testid="stSidebar"] .block-container{
   padding-top: 1rem;
 }
 
-/* Card / Panel utility */
+/* --------- Typography --------- */
+h1,h2,h3,h4{
+  color: var(--text) !important;
+}
+
+/* --------- Cards --------- */
 .az-card{
-  background: var(--panel);
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.03));
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px 16px;
-  backdrop-filter: blur(12px);
-  box-shadow:
-    0 0 0 1px rgba(138,92,255,0.06),
-    0 12px 34px rgba(0,0,0,0.38);
-}
-.az-card--border{
-  position: relative;
-}
-.az-card--border::before{
-  content:"";
-  position:absolute;
-  inset:-1px;
-  border-radius: var(--radius);
-  padding: 1px;
-  background: linear-gradient(120deg, rgba(58,169,255,0.55), rgba(138,92,255,0.55));
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events:none;
-  opacity: 0.55;
 }
 
-/* Small badge */
+.az-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+
+.az-title{
+  font-size: 26px;
+  font-weight: 750;
+  line-height: 1.15;
+  margin-top: 6px;
+}
+
+.az-sub{
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
 .az-badge{
   display:inline-flex;
   align-items:center;
   gap:8px;
   padding: 6px 10px;
   border-radius: 999px;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(180,190,255,0.16);
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.03);
   color: var(--muted);
   font-size: 12px;
 }
+
 .az-dot{
-  width: 8px; height: 8px; border-radius: 999px;
-  background: radial-gradient(circle at 30% 30%, var(--accent3), var(--accent1));
-  box-shadow: 0 0 16px rgba(46,242,255,0.35);
-  animation: pulse 1.6s ease-in-out infinite;
-}
-@keyframes pulse{
-  0%,100%{ transform: scale(1.0); opacity: 0.85; }
-  50%{ transform: scale(1.35); opacity: 1.0; }
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--azure), var(--royal));
 }
 
-/* Divider */
-.az-hr{
-  height: 1px;
-  border: 0;
-  background: linear-gradient(90deg, transparent, rgba(58,169,255,0.55), rgba(138,92,255,0.55), transparent);
-  margin: 0.85rem 0 1.0rem 0;
-  opacity: 0.9;
+.az-meta{
+  text-align:right;
+  font-size: 12px;
+  color: var(--muted);
+}
+.az-meta strong{
+  color: var(--text);
+  font-weight: 650;
 }
 
-/* Buttons */
+/* --------- Buttons --------- */
 .stButton button{
-  background: linear-gradient(120deg, rgba(58,169,255,0.92), rgba(138,92,255,0.92)) !important;
+  border-radius: 12px !important;
   border: 1px solid rgba(255,255,255,0.14) !important;
   color: white !important;
-  border-radius: 12px !important;
+  background: linear-gradient(90deg, var(--azure), var(--royal)) !important;
   padding: 0.56rem 0.95rem !important;
-  transition: transform 120ms ease, filter 120ms ease;
 }
 .stButton button:hover{
-  transform: translateY(-1px);
-  filter: brightness(1.04);
+  filter: brightness(1.05);
 }
 
-/* Inputs */
+/* --------- Inputs --------- */
 .stTextInput input, .stTextArea textarea{
-  background: rgba(255,255,255,0.06) !important;
-  border: 1px solid rgba(180,190,255,0.18) !important;
+  background: rgba(255,255,255,0.03) !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
   color: var(--text) !important;
   border-radius: 12px !important;
 }
+.stTextInput input:focus, .stTextArea textarea:focus{
+  box-shadow: 0 0 0 3px var(--focus) !important;
+  border-color: rgba(0,120,212,0.55) !important;
+}
 
-/* Chat input */
+/* Chat input (bottom) */
 div[data-testid="stChatInput"] textarea{
-  background: rgba(255,255,255,0.07) !important;
-  border: 1px solid rgba(180,190,255,0.20) !important;
+  background: rgba(255,255,255,0.03) !important;
+  border: 1px solid rgba(255,255,255,0.14) !important;
   color: var(--text) !important;
   border-radius: 14px !important;
 }
-
-/* Chat bubbles */
-.stChatMessage{
-  border-radius: 16px;
-}
-.stChatMessage [data-testid="stChatMessageContent"]{
-  border-radius: 16px !important;
-}
-.stChatMessage[data-testid="stChatMessage"]{
-  background: transparent !important;
+div[data-testid="stChatInput"] textarea:focus{
+  box-shadow: 0 0 0 3px var(--focus) !important;
+  border-color: rgba(0,120,212,0.55) !important;
 }
 
-/* Try to give assistant/user different bubble feels */
-div[data-testid="stChatMessage"]:has(img[alt="assistant"]) [data-testid="stChatMessageContent"]{
-  background: rgba(255,255,255,0.06) !important;
-  border: 1px solid rgba(180,190,255,0.14) !important;
-  box-shadow: 0 10px 28px rgba(0,0,0,0.28);
+/* --------- Chat bubbles (simple + robust) --------- */
+div[data-testid="stChatMessage"] [data-testid="stChatMessageContent"]{
+  border-radius: 14px !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  background: rgba(255,255,255,0.03) !important;
 }
-div[data-testid="stChatMessage"]:has(img[alt="user"]) [data-testid="stChatMessageContent"]{
-  background: rgba(58,169,255,0.08) !important;
-  border: 1px solid rgba(58,169,255,0.18) !important;
-  box-shadow: 0 10px 28px rgba(0,0,0,0.22);
+
+/* Make user messages slightly tinted (no :has selector -> stable) */
+div[data-testid="stChatMessage"][aria-label="Chat message from user"] [data-testid="stChatMessageContent"]{
+  background: rgba(0,120,212,0.10) !important;
+  border-color: rgba(0,120,212,0.22) !important;
+}
+
+/* Assistant messages subtle purple edge */
+div[data-testid="stChatMessage"][aria-label="Chat message from assistant"] [data-testid="stChatMessageContent"]{
+  background: rgba(255,255,255,0.03) !important;
+  border-color: rgba(124,58,237,0.18) !important;
 }
 
 /* Code blocks */
-pre, code{
-  border-radius: 12px !important;
-}
 pre{
-  background: rgba(0,0,0,0.35) !important;
-  border: 1px solid rgba(180,190,255,0.14) !important;
+  background: rgba(0,0,0,0.30) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  border-radius: 12px !important;
 }
 
 /* Links */
@@ -235,37 +200,28 @@ a{ color: rgba(140, 200, 255, 0.95) !important; }
 )
 
 # ----------------------------
-# Header
+# Header (minimal)
 # ----------------------------
 st.markdown(
     """
-<div class="az-card az-card--border">
-  <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:14px;">
-    <div style="min-width: 260px;">
-      <div class="az-badge">
-        <span class="az-dot"></span>
-        <span>Azure Architecture Advisor</span>
-      </div>
-      <div style="font-size:28px; font-weight:750; line-height:1.10; margin-top:10px;">
-        Cloud Architecture Guidance<br/>for real-world tradeoffs
-      </div>
-      <div style="margin-top:8px; font-size:13px; color: rgba(235,238,255,0.72);">
-        Clear recommendations · Security-first · Cost-aware · Portfolio-ready output
-      </div>
+<div class="az-card">
+  <div class="az-header">
+    <div>
+      <div class="az-badge"><span class="az-dot"></span><span>Azure Architecture Advisor</span></div>
+      <div class="az-title">Cloud Architecture Guidance</div>
+      <div class="az-sub">Security-first · Reliability-aware · Cost-conscious</div>
     </div>
-
-    <div style="text-align:right;">
-      <div style="font-size:12px; color: rgba(235,238,255,0.60);">Status</div>
-      <div style="font-size:14px; font-weight:650; color: rgba(46,242,255,0.92);">READY</div>
-      <div style="margin-top:8px; font-size:12px; color: rgba(235,238,255,0.60);">Output format</div>
-      <div style="font-size:12px; color: rgba(235,238,255,0.74);">Snapshot · Services · Tradeoffs · Risks · Next</div>
+    <div class="az-meta">
+      <div>Status: <strong>READY</strong></div>
+      <div style="margin-top:6px;">Format: <strong>Snapshot · Services · Tradeoffs · Risks · Next</strong></div>
     </div>
   </div>
 </div>
-<hr class="az-hr"/>
 """,
     unsafe_allow_html=True,
 )
+
+st.write("")  # spacing
 
 # ----------------------------
 # Sidebar
@@ -273,11 +229,11 @@ st.markdown(
 with st.sidebar:
     st.markdown(
         """
-<div class="az-card az-card--border">
-  <div style="font-size:12px; letter-spacing:1.0px; color: rgba(235,238,255,0.70); text-transform: uppercase;">
+<div class="az-card">
+  <div style="font-size:12px; letter-spacing:0.08em; color: rgba(255,255,255,0.70); text-transform: uppercase;">
     Controls
   </div>
-  <div style="margin-top:10px; font-size:13px; color: rgba(235,238,255,0.74); line-height:1.35;">
+  <div style="margin-top:10px; font-size:13px; color: rgba(255,255,255,0.76); line-height:1.45;">
     Advisor mode: <b>Azure Architecture</b><br/>
     Default lens: <b>Security → Reliability → Cost</b>
   </div>
@@ -286,7 +242,7 @@ with st.sidebar:
         unsafe_allow_html=True,
     )
 
-    st.markdown("")
+    st.write("")
 
     example = st.selectbox(
         "Example prompts",
@@ -307,7 +263,7 @@ with st.sidebar:
             st.session_state.messages = []
             st.rerun()
 
-    st.markdown("")
+    st.write("")
     st.caption("Tip: Add constraints (region, RTO/RPO, identity, data sensitivity, throughput, budget).")
 
 # ----------------------------
@@ -326,7 +282,6 @@ client = OpenAI(api_key=api_key)
 try:
     SYSTEM_PROMPT = Path("prompts/system_architecture.txt").read_text(encoding="utf-8")
 except FileNotFoundError:
-    # Sensible fallback so the app still runs (portfolio-friendly)
     SYSTEM_PROMPT = """You are an Azure Cloud Architecture Advisor.
 You produce concise, high-signal recommendations with clear tradeoffs.
 
