@@ -20,200 +20,216 @@ st.set_page_config(
 )
 
 # ----------------------------
-# Minimal Azure + Royal Purple Theme (stable Streamlit CSS)
+# ChatGPT-like Light Azure Theme (minimal + readable)
 # ----------------------------
 st.markdown(
     """
 <style>
-/* --------- Design Tokens --------- */
 :root{
-  --bg: #0b0f19;            /* near-black */
-  --panel: #111827;         /* slate panel */
-  --panel2: #0f172a;        /* deeper */
-  --text: rgba(255,255,255,0.92);
-  --muted: rgba(255,255,255,0.68);
-  --border: rgba(255,255,255,0.10);
+  /* Light azure canvas */
+  --bg0:#F7FBFF;
+  --bg1:#EAF4FF;
 
-  --azure: #0078D4;         /* Azure blue */
-  --royal: #7C3AED;         /* royal purple */
-  --focus: rgba(0,120,212,0.35);
+  /* Surfaces */
+  --surface:#FFFFFF;
+  --surface2: rgba(255,255,255,0.92);
 
-  --radius: 14px;
+  /* Text */
+  --text:#0B1220;
+  --muted: rgba(11,18,32,0.62);
+
+  /* Borders */
+  --border: rgba(15,23,42,0.12);
+
+  /* Accents */
+  --azure:#0078D4;
+  --royal:#7C3AED;
+  --focus: rgba(0,120,212,0.18);
+
+  --radius:14px;
 }
 
-/* --------- App Background --------- */
+/* App background */
 .stApp{
-  background: var(--bg);
+  background:
+    radial-gradient(900px 650px at 15% 10%, rgba(0,120,212,0.10), transparent 60%),
+    radial-gradient(900px 650px at 85% 12%, rgba(124,58,237,0.08), transparent 62%),
+    linear-gradient(180deg, var(--bg0), var(--bg1));
   color: var(--text);
 }
 
-/* Keep layout predictable */
+/* Hide Streamlit chrome */
+#MainMenu {visibility:hidden;}
+header {visibility:hidden;}
+footer {visibility:hidden;}
+
+/* Layout: center content like chat apps */
 .block-container{
-  max-width: 1180px;
+  max-width: 980px;
   padding-top: 1.0rem;
-  padding-bottom: 2.0rem;
+  padding-bottom: 2.4rem;
 }
 
-/* Hide Streamlit chrome */
-#MainMenu {visibility: hidden;}
-header {visibility: hidden;}
-footer {visibility: hidden;}
-
-/* --------- Sidebar --------- */
+/* Sidebar: subtle, light */
 section[data-testid="stSidebar"]{
-  background: #0a0e17;
+  background: rgba(255,255,255,0.70);
   border-right: 1px solid var(--border);
+  backdrop-filter: blur(10px);
 }
 section[data-testid="stSidebar"] .block-container{
   padding-top: 1rem;
 }
 
-/* --------- Typography --------- */
-h1,h2,h3,h4{
-  color: var(--text) !important;
+/* Global text */
+html, body, [class*="st-"], p, li, span, div{
+  color: var(--text);
 }
+h1,h2,h3,h4{ color: var(--text) !important; }
 
-/* --------- Cards --------- */
-.az-card{
-  background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.03));
+/* Minimal top header */
+.az-topbar{
+  background: rgba(255,255,255,0.86);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px 16px;
-}
-
-.az-header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:16px;
+  gap:12px;
+  box-shadow: 0 10px 30px rgba(15,23,42,0.06);
 }
-
-.az-title{
-  font-size: 26px;
-  font-weight: 750;
-  line-height: 1.15;
-  margin-top: 6px;
-}
-
-.az-sub{
-  margin-top: 6px;
-  font-size: 13px;
-  color: var(--muted);
-}
-
-.az-badge{
-  display:inline-flex;
+.az-brand{
+  display:flex;
   align-items:center;
-  gap:8px;
-  padding: 6px 10px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: rgba(255,255,255,0.03);
-  color: var(--muted);
-  font-size: 12px;
+  gap:10px;
+  min-width: 0;
 }
-
 .az-dot{
-  width: 8px;
-  height: 8px;
-  border-radius: 99px;
+  width:10px; height:10px; border-radius:999px;
   background: linear-gradient(90deg, var(--azure), var(--royal));
 }
-
-.az-meta{
-  text-align:right;
+.az-title{
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.az-sub{
+  margin-top: 2px;
   font-size: 12px;
   color: var(--muted);
 }
-.az-meta strong{
-  color: var(--text);
-  font-weight: 650;
+
+/* Sidebar cards */
+.az-card{
+  background: rgba(255,255,255,0.86);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 14px;
+  box-shadow: 0 10px 26px rgba(15,23,42,0.05);
 }
 
-/* --------- Buttons --------- */
+/* Buttons */
 .stButton button{
   border-radius: 12px !important;
-  border: 1px solid rgba(255,255,255,0.14) !important;
+  border: 1px solid rgba(0,0,0,0.06) !important;
   color: white !important;
   background: linear-gradient(90deg, var(--azure), var(--royal)) !important;
-  padding: 0.56rem 0.95rem !important;
+  padding: 0.52rem 0.85rem !important;
 }
-.stButton button:hover{
-  filter: brightness(1.05);
-}
+.stButton button:hover{ filter: brightness(1.05); }
 
-/* --------- Inputs --------- */
+/* Inputs */
 .stTextInput input, .stTextArea textarea{
-  background: rgba(255,255,255,0.03) !important;
-  border: 1px solid rgba(255,255,255,0.12) !important;
+  background: rgba(255,255,255,0.98) !important;
+  border: 1px solid rgba(15,23,42,0.14) !important;
   color: var(--text) !important;
   border-radius: 12px !important;
 }
 .stTextInput input:focus, .stTextArea textarea:focus{
   box-shadow: 0 0 0 3px var(--focus) !important;
-  border-color: rgba(0,120,212,0.55) !important;
+  border-color: rgba(0,120,212,0.40) !important;
 }
 
-/* Chat input (bottom) */
-div[data-testid="stChatInput"] textarea{
-  background: rgba(255,255,255,0.03) !important;
-  border: 1px solid rgba(255,255,255,0.14) !important;
-  color: var(--text) !important;
-  border-radius: 14px !important;
-}
-div[data-testid="stChatInput"] textarea:focus{
-  box-shadow: 0 0 0 3px var(--focus) !important;
-  border-color: rgba(0,120,212,0.55) !important;
+/* Chat area spacing */
+div[data-testid="stChatMessage"]{
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
 }
 
-/* --------- Chat bubbles (simple + robust) --------- */
+/* Chat bubbles (ChatGPT-ish) */
 div[data-testid="stChatMessage"] [data-testid="stChatMessageContent"]{
+  background: rgba(255,255,255,0.95) !important;
+  border: 1px solid rgba(15,23,42,0.10) !important;
   border-radius: 14px !important;
-  border: 1px solid rgba(255,255,255,0.10) !important;
-  background: rgba(255,255,255,0.03) !important;
+  padding: 0.85rem 1.0rem !important;
+  color: var(--text) !important;
+  box-shadow: 0 8px 22px rgba(15,23,42,0.05);
 }
 
-/* Make user messages slightly tinted (no :has selector -> stable) */
+/* Ensure markdown inside bubbles stays dark */
+div[data-testid="stChatMessage"] [data-testid="stChatMessageContent"] *{
+  color: var(--text) !important;
+}
+
+/* User bubble slightly tinted azure */
 div[data-testid="stChatMessage"][aria-label="Chat message from user"] [data-testid="stChatMessageContent"]{
   background: rgba(0,120,212,0.10) !important;
   border-color: rgba(0,120,212,0.22) !important;
 }
 
-/* Assistant messages subtle purple edge */
+/* Assistant bubble neutral + subtle purple edge */
 div[data-testid="stChatMessage"][aria-label="Chat message from assistant"] [data-testid="stChatMessageContent"]{
-  background: rgba(255,255,255,0.03) !important;
+  background: rgba(255,255,255,0.96) !important;
   border-color: rgba(124,58,237,0.18) !important;
+}
+
+/* Chat input (bottom) - readable and clean */
+div[data-testid="stChatInput"]{
+  background: transparent !important;
+}
+div[data-testid="stChatInput"] textarea{
+  background: rgba(255,255,255,0.98) !important;
+  border: 1px solid rgba(15,23,42,0.16) !important;
+  color: var(--text) !important;
+  border-radius: 14px !important;
+}
+div[data-testid="stChatInput"] textarea::placeholder{
+  color: rgba(11,18,32,0.45) !important;
+}
+div[data-testid="stChatInput"] textarea:focus{
+  box-shadow: 0 0 0 3px var(--focus) !important;
+  border-color: rgba(0,120,212,0.45) !important;
 }
 
 /* Code blocks */
 pre{
-  background: rgba(0,0,0,0.30) !important;
-  border: 1px solid rgba(255,255,255,0.10) !important;
+  background: rgba(15,23,42,0.06) !important;
+  border: 1px solid rgba(15,23,42,0.10) !important;
   border-radius: 12px !important;
 }
+code{ color: var(--text) !important; }
 
 /* Links */
-a{ color: rgba(140, 200, 255, 0.95) !important; }
+a{ color: rgba(0,120,212,0.95) !important; }
 </style>
 """,
     unsafe_allow_html=True,
 )
 
 # ----------------------------
-# Header (minimal)
+# Header (ChatGPT-like minimal, no right column)
 # ----------------------------
 st.markdown(
     """
-<div class="az-card">
-  <div class="az-header">
-    <div>
-      <div class="az-badge"><span class="az-dot"></span><span>Azure Architecture Advisor</span></div>
-      <div class="az-title">Cloud Architecture Guidance</div>
-      <div class="az-sub">Security-first · Reliability-aware · Cost-conscious</div>
-    </div>
-    <div class="az-meta">
-      <div>Status: <strong>READY</strong></div>
-      <div style="margin-top:6px;">Format: <strong>Snapshot · Services · Tradeoffs · Risks · Next</strong></div>
+<div class="az-topbar">
+  <div class="az-brand">
+    <div class="az-dot"></div>
+    <div style="min-width:0;">
+      <div class="az-title">Azure Architecture Advisor</div>
+      <div class="az-sub">Ask for architectures, tradeoffs, security, reliability, cost</div>
     </div>
   </div>
 </div>
@@ -221,7 +237,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-st.write("")  # spacing
+st.write("")
 
 # ----------------------------
 # Sidebar
@@ -230,10 +246,10 @@ with st.sidebar:
     st.markdown(
         """
 <div class="az-card">
-  <div style="font-size:12px; letter-spacing:0.08em; color: rgba(255,255,255,0.70); text-transform: uppercase;">
+  <div style="font-size:12px; letter-spacing:0.08em; color: rgba(11,18,32,0.55); text-transform: uppercase;">
     Controls
   </div>
-  <div style="margin-top:10px; font-size:13px; color: rgba(255,255,255,0.76); line-height:1.45;">
+  <div style="margin-top:10px; font-size:13px; color: rgba(11,18,32,0.78); line-height:1.45;">
     Advisor mode: <b>Azure Architecture</b><br/>
     Default lens: <b>Security → Reliability → Cost</b>
   </div>
@@ -328,7 +344,7 @@ for m in st.session_state.messages:
 # Input (prefill support)
 # ----------------------------
 prefill = st.session_state.pop("_prefill", None)
-user_msg = st.chat_input("Describe your workload (e.g., region, RTO/RPO, data sensitivity, traffic, team size)")
+user_msg = st.chat_input("Message Azure Architecture Advisor...")
 
 # Streamlit can't truly prefill st.chat_input; this makes the insert act like "send once".
 if prefill and not user_msg:
