@@ -1,5 +1,7 @@
 import os
 import traceback
+import re
+import streamlit.components.v1 as components
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -349,6 +351,49 @@ def build_context(query: str) -> str:
         parts.append(f"\n---\nSOURCE: {h.get('id','unknown')}\n{h.get('text','')}")
     return "\n".join(parts)
 
+
+
+def extract_mermaid(md: str):
+    """Extract first ```mermaid``` block and return (code_without_fence, remaining_markdown)."""
+    pattern = re.compile(r"```mermaid\s*(.*?)```", re.DOTALL | re.IGNORECASE)
+    m = pattern.search(md or "")
+    if not m:
+        return None, (md or "")
+    code = (m.group(1) or "").strip()
+    remaining = ((md or "")[: m.start()] + (md or "")[m.end() :]).strip()
+    return code, remaining
+
+
+def mermaid_fallback_diagram(user_query: str) -> str:
+    """Minimal fallback diagram if the model fails to include Mermaid."""
+    # Keep labels simple for GitHub/mermaid compatibility
+    return """flowchart LR
+    User --> Edge[Front Door]
+    Edge --> APIM[API Management]
+    APIM --> App[App Service]
+    App --> Data[SQL Database]
+    App --> KV[Key Vault]
+    App --> Mon[Monitor]
+"""
+
+
+def render_mermaid(code: str, height: int = 420):
+    """Render Mermaid diagram in Streamlit using a small HTML component."""
+    safe = (code or "").strip()
+    if not safe:
+        return
+    html = f"""
+    <div class='mermaid'>
+    {safe}
+    </div>
+    <script type='module'>
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({{ startOnLoad: true, securityLevel: 'strict', theme: 'default' }});
+    </script>
+    """
+    components.html(html, height=height, scrolling=True)
+
+
 # ----------------------------
 # Session
 # ----------------------------
@@ -470,9 +515,21 @@ if only_system:
 # Show chat history
 # ----------------------------
 for m in st.session_state.messages:
-    if m["role"] != "system":
-        with st.chat_message(m["role"]):
-            st.markdown(m["content"])
+    if m["role"] == "system":
+        continue
+    role = m.get("role", "assistant")
+    content = m.get("content", "")
+    with st.chat_message(role):
+        mermaid_code, remaining = extract_mermaid(content)
+        # Always show a diagram for assistant messages
+        if role == "assistant":
+            if not mermaid_code:
+                mermaid_code = mermaid_fallback_diagram("")
+            # height scales a bit with number of lines
+            h = max(320, min(640, 260 + 18 * (len((mermaid_code or "").splitlines()))))
+            render_mermaid(mermaid_code, height=h)
+        if remaining:
+            st.markdown(remaining)
 
 # ----------------------------
 # Input (prefill support)
@@ -502,6 +559,7 @@ if user_msg:
                     model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
                     messages=messages_for_call,
                     temperature=0.2,
+                    max_tokens=int(os.getenv("OPENAI_MAX_TOKENS", "650")),
                 )
                 answer = resp.choices[0].message.content
             except Exception as e:
@@ -509,6 +567,13 @@ if user_msg:
                 st.code(traceback.format_exc())
                 st.stop()
 
-            st.markdown(answer)
+            mermaid_code, remaining = extract_mermaid(answer)
+            if not mermaid_code:
+                mermaid_code = mermaid_fallback_diagram(user_msg)
+                answer = f"DIAGRAM:\n```mermaid\n{mermaid_code}\n```\n\n" + answer
+            h = max(320, min(640, 260 + 18 * (len((mermaid_code or "").splitlines()))))
+            render_mermaid(mermaid_code, height=h)
+            if remaining:
+                st.markdown(remaining)
 
     st.session_state.messages.append({"role": "assistant", "content": answer})
